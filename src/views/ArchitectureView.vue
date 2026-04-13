@@ -8,8 +8,8 @@ import View41 from '../components/module4/View41.vue'
 import View42 from '../components/module4/View42.vue'
 import View43 from '../components/module4/View43.vue'
 
-const tabList = ref([])
-const activeTab = ref('')
+const tabList = ref([]) //已经打开了哪些标签
+const activeTab = ref('') //当前激活了哪些标签
 
 const componentMap = {
   view41: View41,
@@ -17,6 +17,7 @@ const componentMap = {
   view43: View43
 }
 
+//用于传入左菜单栏子组件的函数，为了实现打开标签页，同时判断是否需要压入tabList中
 function handleOpenTab(menu) {
   const exists = tabList.value.find(tab => tab.key === menu.key)
 
@@ -26,11 +27,11 @@ function handleOpenTab(menu) {
 
   activeTab.value = menu.key
 }
-
+// 用于传入标签栏子组件的函数，为了实现子通知父，父切换
 function handleChangeTab(key) {
   activeTab.value = key
 }
-
+// 用于传入标签栏子组件的函数，为了实现关闭标签并从tabList删掉，同时激活前一个标签，没有就清空激活状态
 function handleCloseTab(key) {
   const index = tabList.value.findIndex(tab => tab.key === key)
   if (index === -1) return
@@ -72,6 +73,7 @@ const currentComponent = computed(() => {
         />
       </div>
 
+<!--      <component :is="currentComponent" />意思是告诉 <component>：现在应该渲染谁-->
       <div class="block block-4">
         <component v-if="currentComponent" :is="currentComponent" />
         <div v-else class="empty-content">
@@ -83,14 +85,3 @@ const currentComponent = computed(() => {
 </template>
 
 <style scoped src="../assets/views/architecture-view.css"></style>
-<style scoped>
-.empty-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #909399;
-  font-size: 16px;
-}
-</style>
