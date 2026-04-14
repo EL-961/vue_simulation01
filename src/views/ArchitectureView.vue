@@ -1,44 +1,90 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
+import { removePageCache } from '@/stores/pageCache'
 import TopHeader from '../components/layout/TopHeader.vue'
 import LeftSidebar from '../components/layout/LeftSidebar.vue'
 import TabBar from '../components/layout/TabBar.vue'
 import ContentRenderer from '../components/content/ContentRenderer.vue'
 import type { MenuItem } from '@/types/menu'
 
+type MotionDirection = 'forward' | 'backward'
+
 const tabList = ref<MenuItem[]>([])
 const activeTab = ref<string>('')
+const motionDirection = ref<MotionDirection>('forward')
+
+const getTabIndex = (key: string): number => {
+  return tabList.value.findIndex((tab) => tab.key === key)
+}
+
+const setDirectionByTarget = (targetKey: string): void => {
+  const currentIndex = getTabIndex(activeTab.value)
+  const targetIndex = getTabIndex(targetKey)
+
+  if (currentIndex === -1 || targetIndex === -1) {
+    motionDirection.value = 'forward'
+    return
+  }
+
+  motionDirection.value = targetIndex > currentIndex ? 'forward' : 'backward'
+}
 
 const handleOpenTab = (menu: MenuItem): void => {
   const exists = tabList.value.find((tab) => tab.key === menu.key)
 
   if (!exists) {
     tabList.value.push({ ...menu })
+    motionDirection.value = 'forward'
+    activeTab.value = menu.key
+    return
   }
 
+  setDirectionByTarget(menu.key)
   activeTab.value = menu.key
 }
 
 const handleChangeTab = (key: string): void => {
+  if (key === activeTab.value) return
+  setDirectionByTarget(key)
   activeTab.value = key
 }
 
 const handleCloseTab = (key: string): void => {
-  const index = tabList.value.findIndex((tab) => tab.key === key)
+  const index = getTabIndex(key)
   if (index === -1) return
+
+  const isClosingActive = activeTab.value === key
+
+  // 关键：关闭时清缓存，重新打开就回第一页重新请求
+  removePageCache(key)
 
   tabList.value.splice(index, 1)
 
-  if (activeTab.value === key) {
-    activeTab.value =
-        tabList.value[index - 1]?.key ||
-        tabList.value[0]?.key ||
-        ''
+  if (!isClosingActive) return
+
+  const nextTab =
+      tabList.value[index] ||
+      tabList.value[index - 1] ||
+      null
+
+  if (!nextTab) {
+    activeTab.value = ''
+    return
   }
+
+  const nextIndex = getTabIndex(nextTab.key)
+  motionDirection.value = nextIndex >= index ? 'forward' : 'backward'
+  activeTab.value = nextTab.key
 }
 
 const currentTab = computed<MenuItem | null>(() => {
   return tabList.value.find((tab) => tab.key === activeTab.value) || null
+})
+
+const motionName = computed<string>(() => {
+  return motionDirection.value === 'forward'
+      ? 'pane-forward'
+      : 'pane-backward'
 })
 </script>
 
@@ -63,9 +109,20 @@ const currentTab = computed<MenuItem | null>(() => {
       </div>
 
       <div class="block block-4">
-        <ContentRenderer v-if="currentTab" :tab="currentTab" />
-        <div v-else class="empty-content">
-          请从左侧菜单打开一个标签页
+        <div class="content-stage">
+          <Transition :name="motionName">
+            <div
+                v-if="currentTab"
+                :key="currentTab.key"
+                class="content-page"
+            >
+              <ContentRenderer :tab="currentTab" />
+            </div>
+
+            <div v-else key="empty" class="empty-content">
+              请从左侧菜单打开一个标签页
+            </div>
+          </Transition>
         </div>
       </div>
     </div>

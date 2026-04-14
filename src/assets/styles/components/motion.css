@@ -1,0 +1,152 @@
+.content-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.content-page,
+.empty-content {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+}
+
+/* 向前：目标 tab 在右边，新页从右进，旧页往左退 */
+.pane-forward-enter-active,
+.pane-forward-leave-active {
+    transition:
+            transform 320ms cubic-bezier(.32,.72,0,1),
+            opacity 320ms cubic-bezier(.32,.72,0,1),
+            filter 320ms cubic-bezier(.32,.72,0,1),
+            box-shadow 320ms cubic-bezier(.32,.72,0,1);
+}
+
+.pane-forward-enter-from {
+    transform: translateX(100%);
+    opacity: 1;
+    box-shadow: -14px 0 22px rgba(0, 0, 0, 0.24);
+}
+
+.pane-forward-enter-to {
+    transform: translateX(0);
+    opacity: 1;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.10);
+}
+
+.pane-forward-leave-from {
+    transform: translateX(0);
+    opacity: 1;
+    filter: brightness(1);
+}
+
+
+/* 向后：目标 tab 在左边，新页从左进，旧页往右退 */
+.pane-backward-enter-active,
+.pane-backward-leave-active {
+    transition:
+            transform 320ms cubic-bezier(.32,.72,0,1),
+            opacity 320ms cubic-bezier(.32,.72,0,1),
+            filter 320ms cubic-bezier(.32,.72,0,1),
+            box-shadow 320ms cubic-bezier(.32,.72,0,1);
+}
+
+.pane-backward-enter-from {
+    transform: translateX(-100%);
+    opacity: 1;
+    box-shadow: 14px 0 22px rgba(0, 0, 0, 0.24);
+}
+
+.pane-backward-enter-to {
+    transform: translateX(0);
+    opacity: 1;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.10);
+}
+
+.pane-backward-leave-from {
+    transform: translateX(0);
+    opacity: 1;
+    filter: brightness(1);
+}
+
+
+.menu-drop-enter-active,
+.menu-drop-leave-active {
+    overflow: hidden;
+    transition:
+            max-height 260ms cubic-bezier(.32,.72,0,1),
+            opacity 220ms ease,
+            transform 260ms cubic-bezier(.32,.72,0,1);
+}
+
+.menu-drop-enter-from,
+.menu-drop-leave-to {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+}
+
+.menu-drop-enter-to,
+.menu-drop-leave-from {
+    max-height: 420px;
+    opacity: 1;
+    transform: translateY(0);
+}
+.pane-forward-enter-active,
+.pane-forward-leave-active,
+.pane-backward-enter-active,
+.pane-backward-leave-active {
+    transition:
+            transform 600ms cubic-bezier(.32,.72,0,1),
+            opacity 600ms cubic-bezier(.32,.72,0,1),
+            box-shadow 600ms cubic-bezier(.32,.72,0,1);
+}
+
+/* forward：目标 tab 在右边 */
+.pane-forward-enter-from {
+    transform: translateX(100%);
+    opacity: 1;
+    box-shadow: -14px 0 22px rgba(0, 0, 0, 0.18);
+}
+
+.pane-forward-enter-to {
+    transform: translateX(0);
+    opacity: 1;
+    box-shadow: none;
+}
+
+.pane-forward-leave-from {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.pane-forward-leave-to {
+    transform: translateX(-100%);
+    opacity: 1;
+}
+
+/* backward：目标 tab 在左边 */
+.pane-backward-enter-from {
+    transform: translateX(-100%);
+    opacity: 1;
+    boxShadow: 14px 0 22px rgba(0, 0, 0, 0.18);
+}
+
+.pane-backward-enter-to {
+    transform: translateX(0);
+    opacity: 1;
+    box-shadow: none;
+}
+
+.pane-backward-leave-from {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.pane-backward-leave-to {
+    transform: translateX(100%);
+    opacity: 1;
+}

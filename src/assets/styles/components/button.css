@@ -1,0 +1,26 @@
+.action-btn,
+.page-btn {
+  min-width: 72px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #c7d0da;
+  border-radius: 8px;
+  background: linear-gradient(#fafcfe, #e6ecf3);
+  color: #24364d;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7) inset;
+}
+
+.action-btn:hover,
+.page-btn:hover {
+  background: linear-gradient(#eef4fb, #d9e4f0);
+}
+
+.action-btn:disabled,
+.page-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

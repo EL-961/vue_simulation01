@@ -8,6 +8,10 @@ const emit = defineEmits<{
 }>()
 
 const openGroups = ref<string[]>(['core'])
+const groups = menuList as MenuGroup[]
+
+const OPEN_DUR = 420
+const CLOSE_DUR = 300
 
 const toggleGroup = (key: string): void => {
   if (openGroups.value.includes(key)) {
@@ -21,7 +25,54 @@ const handleOpenTab = (item: MenuItem): void => {
   emit('open-tab', item)
 }
 
-const groups = menuList as MenuGroup[]
+/**
+ * 卷轴展开：
+ * 外层只负责“腾空间”
+ * 内层由 CSS 做 clip-path 展开
+ */
+const onBeforeEnter = (el: Element): void => {
+  const shell = el as HTMLElement
+  shell.style.height = '0px'
+  shell.style.overflow = 'hidden'
+}
+
+const onEnter = (el: Element, done: () => void): void => {
+  const shell = el as HTMLElement
+  const targetHeight = shell.scrollHeight
+
+  requestAnimationFrame(() => {
+    shell.style.height = `${targetHeight}px`
+  })
+
+  window.setTimeout(() => {
+    shell.style.height = ''
+    shell.style.overflow = ''
+    done()
+  }, OPEN_DUR)
+}
+
+/**
+ * 卷轴收起：
+ * 外层高度收回
+ * 内层由 CSS 做 clip-path 卷回
+ */
+const onBeforeLeave = (el: Element): void => {
+  const shell = el as HTMLElement
+  shell.style.height = `${shell.scrollHeight}px`
+  shell.style.overflow = 'hidden'
+}
+
+const onLeave = (el: Element, done: () => void): void => {
+  const shell = el as HTMLElement
+
+  requestAnimationFrame(() => {
+    shell.style.height = '0px'
+  })
+
+  window.setTimeout(() => {
+    done()
+  }, CLOSE_DUR)
+}
 </script>
 
 <template>
@@ -35,68 +86,38 @@ const groups = menuList as MenuGroup[]
     >
       <div class="group-title" @click="toggleGroup(group.key)">
         <span>{{ group.title }}</span>
-        <span>{{ openGroups.includes(group.key) ? '▼' : '▶' }}</span>
+        <span class="group-arrow">
+          {{ openGroups.includes(group.key) ? '▼' : '▶' }}
+        </span>
       </div>
 
-      <div v-if="openGroups.includes(group.key)" class="group-children">
+      <Transition
+          name="menu-curtain"
+          @before-enter="onBeforeEnter"
+          @enter="onEnter"
+          @before-leave="onBeforeLeave"
+          @leave="onLeave"
+      >
         <div
-            v-for="child in group.children"
-            :key="child.key"
-            class="child-item"
-            @click="handleOpenTab(child)"
+            v-if="openGroups.includes(group.key)"
+            class="group-children-shell"
         >
-          {{ child.title }}
+          <div class="group-children-panel">
+            <div class="group-children">
+              <div
+                  v-for="child in group.children"
+                  :key="child.key"
+                  class="child-item"
+                  @click="handleOpenTab(child)"
+              >
+                {{ child.title }}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </Transition>
     </div>
   </div>
 </template>
 
-<style scoped>
-.left-sidebar {
-  width: 100%;
-  height: 100%;
-  padding: 16px;
-  box-sizing: border-box;
-  overflow-y: auto;
-}
-
-.menu-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.menu-group {
-  margin-bottom: 10px;
-}
-
-.group-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background: #f5f7fa;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.group-children {
-  margin-top: 8px;
-  padding-left: 10px;
-}
-
-.child-item {
-  padding: 8px 12px;
-  margin-bottom: 4px;
-  border-radius: 4px;
-  cursor: pointer;
-  color: #303133;
-}
-
-.child-item:hover {
-  background: #ecf5ff;
-  color: #409eff;
-}
-</style>
+<style scoped src="@/assets/styles/components/left-sidebar.css"></style>

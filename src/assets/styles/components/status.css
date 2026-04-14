@@ -1,0 +1,16 @@
+.state-box {
+  width: 100%;
+  flex: 1;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: var(--ios-radius-sm);
+  color: var(--ios-subtext);
+  text-align: center;
+}
+
+.error-box {
+  color: var(--ios-danger);
+}

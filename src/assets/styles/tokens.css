@@ -1,0 +1,51 @@
+:root {
+  --ios-bg: #d2d4dd;
+  --ios-bg-stripe: rgba(0, 0, 0, 0.02);
+
+  --ios-header-start: #c2cfdf;
+  --ios-header-end: #597498;
+  --ios-header-border-dark: #3e5b7e;
+  --ios-header-border-light: #eef1f4;
+  --ios-header-shadow: 0 1px 3px rgba(119, 119, 119, 0.35);
+
+  --ios-primary: #1458bb;
+  --ios-primary-light: #0886ec;
+  --ios-primary-soft: #6fa3e6;
+  --ios-primary-faint: #dbeafe;
+
+  --ios-card-bg: #ffffff;
+  --ios-card-bg-soft: #f8fafc;
+  --ios-panel-top: #fdfefe;
+  --ios-panel-bottom: #eef2f7;
+
+  --ios-border: #c7ccd4;
+  --ios-border-dark: #aeb6c1;
+  --ios-border-light: #eef2f7;
+
+  --ios-text: #2f3a4a;
+  --ios-subtext: #6b7280;
+  --ios-muted: #9099a8;
+  --ios-white: #ffffff;
+
+  --ios-success: #10b981;
+  --ios-warning: #f59e0b;
+  --ios-danger: #e5484d;
+
+  --ios-radius-xs: 6px;
+  --ios-radius-sm: 8px;
+  --ios-radius-md: 10px;
+  --ios-radius-lg: 14px;
+  --ios-radius-pill: 999px;
+
+  --ios-shadow-xs: 0 1px 1px rgba(255, 255, 255, 0.7) inset;
+  --ios-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --ios-shadow-md: 0 1px 3px rgba(119, 119, 119, 0.35);
+  --ios-shadow-lg: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  --ios-gradient-header: linear-gradient(var(--ios-header-start), var(--ios-header-end));
+  --ios-gradient-hover: linear-gradient(var(--ios-primary-light), var(--ios-primary));
+  --ios-gradient-card: linear-gradient(var(--ios-panel-top), var(--ios-panel-bottom));
+  --ios-gradient-btn: linear-gradient(#fafcff, #dbe4f0);
+
+  --font-family-base: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}

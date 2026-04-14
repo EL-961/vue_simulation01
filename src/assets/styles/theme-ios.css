@@ -1,0 +1,48 @@
+.block,
+.table-wrapper,
+.detail-wrapper,
+.result-box,
+.json-box,
+.meta-info,
+.request-url,
+.search-bar,
+.state-box,
+.page-header,
+.table-toolbar,
+.json-toolbar,
+.health-toolbar {
+  border: 1px solid var(--ios-border);
+  box-shadow: var(--ios-shadow-sm), var(--ios-shadow-xs);
+}
+
+.group-title,
+.child-item,
+.tab-item,
+.action-btn,
+.page-btn,
+.id-input,
+.table-wrapper,
+.detail-wrapper,
+.result-box,
+.json-box,
+.meta-info,
+.request-url,
+.search-bar {
+  background: var(--ios-gradient-card);
+}
+
+.action-btn:hover,
+.page-btn:hover,
+.child-item:hover,
+.tab-item:hover:not(.active) {
+  background: var(--ios-gradient-hover);
+  color: var(--ios-white);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
+}
+
+.action-btn:active,
+.page-btn:active,
+.child-item:active,
+.tab-item:active {
+  transform: translateY(1px);
+}

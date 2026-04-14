@@ -19,3 +19,4 @@ defineProps<{
   <ColumnsView v-else-if="tab.view === 'columns'" :tab="tab" />
   <div v-else>暂不支持的视图类型：{{ tab.view }}</div>
 </template>
+<style scoped src="@/assets/styles/index.css"></style>
