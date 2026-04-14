@@ -1,16 +1,15 @@
-<script setup>
-defineProps({
-  tabs: {
-    type: Array,
-    default: () => []
-  },
-  activeTab: {
-    type: String,
-    default: ''
-  }
-})
+<script setup lang="ts">
+import type { MenuItem } from '../../types/menu'
 
-const emit = defineEmits(['change-tab', 'close-tab'])
+defineProps<{
+  tabs: MenuItem[]
+  activeTab: string
+}>()
+
+const emit = defineEmits<{
+  (e: 'change-tab', key: string): void
+  (e: 'close-tab', key: string): void
+}>()
 </script>
 
 <template>
@@ -41,8 +40,11 @@ const emit = defineEmits(['change-tab', 'close-tab'])
   gap: 10px;
   padding: 0 12px;
   box-sizing: border-box;
+
   overflow-x: auto;
+  overflow-y: hidden;   /* 关键：禁止上下滚动 */
   white-space: nowrap;
+  flex-wrap: nowrap;    /* 防止换行 */
 }
 
 .tab-item {

@@ -1,29 +1,54 @@
-<script setup>
-const emit = defineEmits(['open-tab'])
+<script setup lang="ts">
+import { ref } from 'vue'
+import type { MenuGroup, MenuItem } from '../../types/menu'
+import { menuList } from '../../config/menuList'
 
-const menuList = [
-  { key: 'view41', title: '结构 4-1' },
-  { key: 'view42', title: '结构 4-2' },
-  { key: 'view43', title: '结构 4-3' }
-]
+const emit = defineEmits<{
+  (e: 'open-tab', menu: MenuItem): void
+}>()
 
-function handleClick(item) {
+const openGroups = ref<string[]>(['core'])
+
+const toggleGroup = (key: string): void => {
+  if (openGroups.value.includes(key)) {
+    openGroups.value = openGroups.value.filter((item) => item !== key)
+  } else {
+    openGroups.value.push(key)
+  }
+}
+
+const handleOpenTab = (item: MenuItem): void => {
   emit('open-tab', item)
 }
+
+const groups = menuList as MenuGroup[]
 </script>
 
 <template>
   <div class="left-sidebar">
     <div class="menu-title">功能导航</div>
-    <ul class="menu-list">
-      <li
-          v-for="item in menuList"
-          :key="item.key"
-          @click="handleClick(item)"
-      >
-        {{ item.title }}
-      </li>
-    </ul>
+
+    <div
+        v-for="group in groups"
+        :key="group.key"
+        class="menu-group"
+    >
+      <div class="group-title" @click="toggleGroup(group.key)">
+        <span>{{ group.title }}</span>
+        <span>{{ openGroups.includes(group.key) ? '▼' : '▶' }}</span>
+      </div>
+
+      <div v-if="openGroups.includes(group.key)" class="group-children">
+        <div
+            v-for="child in group.children"
+            :key="child.key"
+            class="child-item"
+            @click="handleOpenTab(child)"
+        >
+          {{ child.title }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,8 +56,9 @@ function handleClick(item) {
 .left-sidebar {
   width: 100%;
   height: 100%;
-  padding: 20px;
+  padding: 16px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .menu-title {
@@ -41,19 +67,36 @@ function handleClick(item) {
   margin-bottom: 16px;
 }
 
-.menu-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.menu-group {
+  margin-bottom: 10px;
 }
 
-.menu-list li {
-  padding: 12px 10px;
-  border-bottom: 1px solid #ebeef5;
-  cursor: pointer;
-}
-
-.menu-list li:hover {
+.group-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
   background: #f5f7fa;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.group-children {
+  margin-top: 8px;
+  padding-left: 10px;
+}
+
+.child-item {
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #303133;
+}
+
+.child-item:hover {
+  background: #ecf5ff;
+  color: #409eff;
 }
 </style>
