@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { MenuGroup, MenuItem } from '../../types/menu'
-import { menuList } from '../../config/menuList'
+import type { MenuGroup, MenuItem } from '@/types/menu'
+import { menuList } from '@/config/menuList'
 
 const emit = defineEmits<{
   (e: 'open-tab', menu: MenuItem): void
 }>()
-
-const openGroups = ref<string[]>(['core'])
+const openGroups = ref<string[]>([])
+// const openGroups = ref<string[]>(['core'])
 const groups = menuList as MenuGroup[]
 
 const OPEN_DUR = 420

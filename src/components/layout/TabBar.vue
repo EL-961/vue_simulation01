@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { MenuItem } from '../../types/menu'
+import type { MenuItem } from '@/types/menu'
 
 defineProps<{
   tabs: MenuItem[]
