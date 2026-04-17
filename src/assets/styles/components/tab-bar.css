@@ -124,9 +124,9 @@
   background: linear-gradient(
           to bottom,
           #f4f5f6 0%,
-          #e3e6ea 18%,
-          #cfd4da 62%,
-          #bcc2ca 100%
+          #e4e7eb 16%,
+          #d5dae0 56%,
+          #c8ced6 100%
   );
   border-top: 1px solid #969da7;
   border-left: 1px solid #979ea8;
@@ -145,7 +145,7 @@
   right: 1px;
   bottom: -1px;
   height: 2px;
-  background: #f3f5f8;
+  background: #d5dae0;
   z-index: 8;
 }
 

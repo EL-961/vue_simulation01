@@ -76,7 +76,12 @@
   grid-area: four;
   margin-top: -1px;
   padding: 12px;
-  background: #f3f5f8;
+  background: linear-gradient(
+          to bottom,
+          #d5dae0 0px,
+          #cfd5dc 32px,
+          #c7cdd5 100%
+  );
   border: 1px solid #9da4ad;
   border-top: none;
   border-radius: 0 0 10px 10px;
