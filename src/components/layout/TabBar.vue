@@ -17,12 +17,9 @@ const tabBarRef = ref<HTMLElement | null>(null)
 const handleWheel = (event: WheelEvent): void => {
   const el = tabBarRef.value
   if (!el) return
-
-  // 有纵向滚轮时，把它映射成横向滚动
   if (event.deltaY === 0) return
 
   event.preventDefault()
-
   el.scrollBy({
     left: event.deltaY,
     behavior: 'auto'
@@ -34,18 +31,23 @@ const handleWheel = (event: WheelEvent): void => {
   <div
       ref="tabBarRef"
       class="tab-bar"
+      :class="{ 'tab-bar--even': tabs.length > 0 && tabs.length <= 6 }"
       @wheel.prevent="handleWheel"
   >
     <div
-        v-for="tab in tabs"
+        v-for="(tab, index) in tabs"
         :key="tab.key"
         class="tab-item"
-        :class="{ active: activeTab === tab.key }"
+        :class="{
+        active: activeTab === tab.key,
+        first: index === 0
+      }"
         @click="emit('change-tab', tab.key)"
     >
-      <span>{{ tab.title }}</span>
+      <span class="tab-title">{{ tab.title }}</span>
 
       <button
+          v-if="activeTab === tab.key"
           type="button"
           class="close-btn"
           @click.stop="emit('close-tab', tab.key)"

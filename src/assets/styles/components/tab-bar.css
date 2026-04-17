@@ -1,18 +1,28 @@
 .tab-bar {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
+  align-items: flex-end;
+  gap: 0;
+  padding: 0 8px;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
   flex-wrap: nowrap;
-
-  /* 隐藏滚动条，但保留滚轮 */
   scrollbar-width: none;
   -ms-overflow-style: none;
+  background:
+          linear-gradient(
+                  to bottom,
+                  #d7d9dd 0%,
+                  #cfd2d7 32%,
+                  #c4c8ce 68%,
+                  #bcc1c8 100%
+          );
+  box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.72),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
 
 .tab-bar::-webkit-scrollbar {
@@ -21,51 +31,156 @@
   display: none;
 }
 
+/* 整条公共底线 */
+.tab-bar::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 0;
+  height: 1px;
+  background: #8e949d;
+  z-index: 1;
+}
+
+/* tab 数量少时等分 */
+.tab-bar--even .tab-item {
+  flex: 1 1 0;
+}
+
+/* 多 tab 时保留横向滚动 */
 .tab-item {
-  display: inline-flex;
+  position: relative;
+  z-index: 2;
+  flex: 0 0 180px;
+  min-width: 0;
+  height: 38px;
+  margin-top: 6px;
+  display: flex;
   align-items: center;
-  gap: 6px;
-  height: 32px;
-  padding: 0 12px;
-  border: 1px solid #c8d0da;
-  border-radius: 18px;
-  background: linear-gradient(#f9fbfd, #e5ebf2);
-  color: #24364d;
+  justify-content: center;
+  padding: 0 34px 0 16px;
+  border-top: 1px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  background: transparent;
+  color: #33455d;
+  cursor: pointer;
+  user-select: none;
+  transition:
+          color 0.16s ease,
+          background 0.16s ease,
+          border-color 0.16s ease,
+          box-shadow 0.16s ease;
+}
+
+.tab-item + .tab-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 1px;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.34);
+  z-index: 1;
+}
+
+.tab-title {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
   font-size: 14px;
   font-weight: 700;
-  cursor: pointer;
+  line-height: 1;
 }
 
 .tab-item:hover {
-  background: linear-gradient(#f0f5fa, #dfe7ef);
+  background: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.26),
+          rgba(255, 255, 255, 0.08)
+  );
 }
 
 .tab-item.active {
-  background: linear-gradient(#1f8fff, #1663c7);
-  border-color: #1255a8;
-  color: #fff;
+  z-index: 6;
+  height: 40px;
+  margin-top: 4px;
+  margin-bottom: -1px;
+  background:
+          linear-gradient(
+                  to bottom,
+                  #f6f7f8 0%,
+                  #eceef1 18%,
+                  #d8dbe0 62%,
+                  #cfd3d8 100%
+          );
+  border-top: 1px solid #9ca2ab;
+  border-left: 1px solid #9da3ac;
+  border-right: 1px solid #9da3ac;
+  box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.8),
+          0 1px 0 rgba(0, 0, 0, 0.03);
+  color: #24364d;
+}
+
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  bottom: -1px;
+  height: 2px;
+  background:
+          linear-gradient(
+                  to bottom,
+                  #d1d5da 0%,
+                  #d5d8dd 100%
+          );
+  z-index: 8;
+}
+
+.tab-item.active::before,
+.tab-item.active + .tab-item::before {
+  opacity: 0;
 }
 
 .close-btn {
-  width: 16px;
-  height: 16px;
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
   padding: 0;
-  border-radius: 50%;
+  border: 1px solid #969ca4;
+  border-radius: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1;
-  color: inherit;
-  background: rgba(0, 0, 0, 0.06);
+  color: #66707d;
+  background: linear-gradient(to bottom, #d9dce0, #bcc1c8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
   cursor: pointer;
 }
 
-.tab-item.active .close-btn {
-  background: rgba(255, 255, 255, 0.18);
+.close-btn:hover {
+  background: linear-gradient(to bottom, #e5e8ec, #c6cbd2);
 }
 
 .empty-text {
-  color: #7b8794;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px 8px;
+  color: #6e7885;
   font-size: 13px;
 }
